@@ -2,8 +2,13 @@ import { MapPin, Search } from "lucide-react";
 import styles from "../styles/SearchForm.module.css";
 import { useState, type FormEvent } from "react";
 import axios from "axios";
+import type { Offer } from "../types/OfferProps";
 
-const SearchForm = () => {
+type SearchFormProps = {
+  setOffers: React.Dispatch<React.SetStateAction<Offer[]>>;
+};
+
+const SearchForm = ({ setOffers }: SearchFormProps) => {
   const [search, setSearch] = useState<string>("");
   const [location, setLocation] = useState<string>("");
 
@@ -18,7 +23,7 @@ const SearchForm = () => {
         },
       });
 
-      console.log(res.data);
+      setOffers(res.data.offers as Offer[]);
     } catch (err) {
       console.error("Błąd przy wysyłaniu:", err);
     }
