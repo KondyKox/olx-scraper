@@ -1,9 +1,13 @@
+import HeaderLogo from "./components/HeaderLogo";
 import SearchForm from "./components/SearchForm";
 
 function App() {
   return (
     <main>
-      <SearchForm />
+      <div className="header">
+        <HeaderLogo />
+        <SearchForm />
+      </div>
     </main>
   );
 }

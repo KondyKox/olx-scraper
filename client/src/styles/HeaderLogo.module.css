@@ -1,0 +1,37 @@
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: var(--clr-accent-secondary);
+  color: white;
+  padding: 12px 24px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+}
+
+.logoContainer {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.icon {
+  width: 28px;
+  height: 28px;
+  stroke: var(--clr-accent);
+}
+
+.title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+}
+
+.title span {
+  color: var(--clr-accent);
+}
+
+.tagline {
+  font-size: 0.9rem;
+  color: #c9d1d1;
+  font-style: italic;
+}
