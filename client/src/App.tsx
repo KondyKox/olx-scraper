@@ -1,19 +1,14 @@
-import { useState } from "react";
-import HeaderLogo from "./components/HeaderLogo";
-import SearchForm from "./components/SearchForm";
-import type { Offer } from "./types/OfferProps";
+import Header from "./components/Header";
+import { OffersProvider } from "./context/OffersContext";
 
 function App() {
-  const [offers, setOffers] = useState<Offer[]>([]);
-
   return (
     <main>
-      <div className="header">
-        <HeaderLogo />
-        <SearchForm setOffers={setOffers} />
-        <hr />
+      <OffersProvider>
+        <Header />
+
         <div>
-          {offers &&
+          {/* {offers &&
             offers.map((offer, i) => (
               <div key={i}>
                 <img src={offer.image.src} alt={offer.image.alt} />
@@ -24,9 +19,9 @@ function App() {
                 <br />
                 <a href={offer.url}>{offer.url}</a>
               </div>
-            ))}
+            ))} */}
         </div>
-      </div>
+      </OffersProvider>
     </main>
   );
 }
