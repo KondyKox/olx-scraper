@@ -1,4 +1,5 @@
 export type Offer = {
+  id: string;
   title: string;
   price: number;
   location: string;

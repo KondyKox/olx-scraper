@@ -1,4 +1,7 @@
 export const extractOffer = (card: Element) => {
+  // ID
+  const id = card.getAttribute("id");
+
   // Title
   const title = (card.querySelector("h4")?.textContent || "Brak tytułu").trim();
 
@@ -38,5 +41,5 @@ export const extractOffer = (card: Element) => {
     alt: imageAlt,
   };
 
-  return { title, price, location, date, url, image };
+  return { id, title, price, location, date, url, image };
 };
