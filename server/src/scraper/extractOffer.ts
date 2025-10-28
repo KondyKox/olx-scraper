@@ -34,7 +34,12 @@ export const extractOffer = (card: Element) => {
 
   // Image src & alt
   const imageEl = card.querySelector("img.css-8wsg1m");
-  const imageSrc = imageEl?.getAttribute("src");
+  const imageSrc =
+    imageEl?.getAttribute("src") ||
+    imageEl?.getAttribute("data-src") ||
+    imageEl?.getAttribute("data-srcset")?.split(" ")[0] ||
+    imageEl?.getAttribute("srcset")?.split(" ")[0] ||
+    "";
   const imageAlt = imageEl?.getAttribute("alt");
   const image = {
     src: imageSrc,

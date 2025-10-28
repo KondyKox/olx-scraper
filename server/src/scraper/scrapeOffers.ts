@@ -5,7 +5,11 @@ import { acceptCookiesIfPresent } from "../utils/consent";
 import { extractOffer } from "./extractOffer";
 import { OLX_URL } from "../config/scraper";
 
-export const scrapeOffers = async (search: string, location?: string) => {
+export const scrapeOffers = async (
+  search: string,
+  amount: number,
+  location?: string
+) => {
   const { browser, page } = await createBrowser();
 
   // Logi z przeglądarki
@@ -45,13 +49,14 @@ export const scrapeOffers = async (search: string, location?: string) => {
     // Pobiera oferty
     const offers = await page.$$eval(
       "div[data-cy='l-card']",
-      (cards, extractFnString) => {
+      (cards, extractFnString, amount) => {
         console.log("Znaleziono kart:", cards.length);
 
         const exctractFn = eval(extractFnString);
-        return Array.from(cards).slice(0, 5).map(exctractFn); // zmienic 5 na zmienną z frontu
+        return Array.from(cards).slice(0, amount).map(exctractFn);
       },
-      extractOffer.toString()
+      extractOffer.toString(),
+      amount
     );
 
     console.log(`📦 Znalazłem ${offers.length} ofert`);

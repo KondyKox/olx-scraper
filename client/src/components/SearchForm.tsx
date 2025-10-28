@@ -1,4 +1,4 @@
-import { MapPin, Search } from "lucide-react";
+import { ListOrdered, MapPin, Search } from "lucide-react";
 import styles from "../styles/SearchForm.module.css";
 import { useState, type FormEvent } from "react";
 import { useOffers } from "../hooks/useOffers";
@@ -6,12 +6,13 @@ import { useOffers } from "../hooks/useOffers";
 const SearchForm = () => {
   const [search, setSearch] = useState<string>("");
   const [location, setLocation] = useState<string>("");
+  const [amount, setAmount] = useState<number>(1);
   const { fetchOffers } = useOffers();
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
 
-    fetchOffers(search, location);
+    fetchOffers(search, amount, location);
   };
 
   return (
@@ -23,6 +24,7 @@ const SearchForm = () => {
           name="search"
           type="text"
           placeholder="Czego szukasz..."
+          value={search}
           onChange={(e) => setSearch(e.target.value)}
         />
       </div>
@@ -33,7 +35,19 @@ const SearchForm = () => {
           name="location"
           type="text"
           placeholder="Jaka lokalizacja..."
+          value={location}
           onChange={(e) => setLocation(e.target.value)}
+        />
+      </div>
+      <div className={styles.input_wrapper}>
+        <ListOrdered className={styles.icon} />
+        <input
+          id="amount"
+          name="amount"
+          type="number"
+          placeholder="Ile elementów..."
+          min={1}
+          onChange={(e) => setAmount(parseInt(e.target.value))}
         />
       </div>
       <button>Szukaj</button>
