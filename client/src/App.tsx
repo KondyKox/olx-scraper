@@ -1,4 +1,5 @@
 import Header from "./components/Header";
+import OffersList from "./components/OffersList";
 import { OffersProvider } from "./context/OffersContext";
 
 function App() {
@@ -7,20 +8,7 @@ function App() {
       <OffersProvider>
         <Header />
 
-        <div>
-          {/* {offers &&
-            offers.map((offer, i) => (
-              <div key={i}>
-                <img src={offer.image.src} alt={offer.image.alt} />
-                <span>{offer.title}</span>
-                <span>{offer.price}</span>
-                <span>{offer.location}</span>
-                <span>{offer.date}</span>
-                <br />
-                <a href={offer.url}>{offer.url}</a>
-              </div>
-            ))} */}
-        </div>
+        <OffersList />
       </OffersProvider>
     </main>
   );

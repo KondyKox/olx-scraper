@@ -14,7 +14,7 @@ export const OffersContext = createContext<OffersContextType | undefined>(
 
 export const OffersProvider = ({ children }: { children: React.ReactNode }) => {
   const [offers, setOffers] = useState<Offer[]>([]);
-  const [loading, setLoading] = useState<boolean>(true);
+  const [loading, setLoading] = useState<boolean>(false);
 
   const fetchOffers = async (search: string, location?: string) => {
     try {

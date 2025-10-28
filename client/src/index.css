@@ -1,10 +1,12 @@
 :root {
   --clr-foreground: hsl(0, 14%, 91%);
   --clr-background: hsl(0, 0%, 16%);
+  --clr-background-secondary: hsla(0, 0%, 10%);
   --clr-accent: hsl(177, 79%, 52%);
   --clr-accent-secondary: hsla(186, 100%, 10%, 1);
 
   --font-sm: 0.75rem;
+  --font-lg: 1.25rem;
 }
 
 * {
