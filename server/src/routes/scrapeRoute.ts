@@ -4,16 +4,24 @@ import { scrapeOffers } from "../scraper/scrapeOffers";
 
 const router = express.Router();
 
-router.get("/scrape", async (_req, res) => {
-  const { search, location } = _req.query;
+router.get("/scrape", async (req, res) => {
+  const searchParam = req.query.search;
+  const locationParam = req.query.location;
 
-  if (!search) {
+  // 🧹 Bezpieczne parsowanie i trimowanie
+  const search = typeof searchParam === "string" ? searchParam.trim() : "";
+  const location =
+    typeof locationParam === "string" ? locationParam.trim() : "";
+
+  if (!search || !search.trim()) {
     console.warn("⚠️  Brak parametru 'search'");
-    return res.status(400).json({ success: false, error: "No search query." });
+    return res
+      .status(400)
+      .json({ success: false, error: "No search query provided." });
   }
 
   try {
-    const offers = await scrapeOffers();
+    const offers = await scrapeOffers(search, location || undefined);
     // TODO: route dla zapisywania
     // saveOffers(offers);
     res.json({ success: true, offers });

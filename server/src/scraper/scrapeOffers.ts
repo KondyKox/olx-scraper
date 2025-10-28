@@ -1,10 +1,11 @@
 // import { saveOffers } from "./saveOffers";
 import { createBrowser } from "../config/browser";
-import { OLX_URL } from "../config/scraper";
+import { normalizedLocation } from "../utils/normalizeLocation";
 import { acceptCookiesIfPresent } from "../utils/consent";
 import { extractOffer } from "./extractOffer";
+import { OLX_URL } from "../config/scraper";
 
-export const scrapeOffers = async () => {
+export const scrapeOffers = async (search: string, location?: string) => {
   const { browser, page } = await createBrowser();
 
   // Logi z przeglądarki
@@ -16,9 +17,19 @@ export const scrapeOffers = async () => {
   // });
 
   try {
-    console.log("🔍 Wchodzę na stronę OLX...");
+    const query = encodeURIComponent(search.trim());
+    const normalized = normalizedLocation(location);
 
-    await page.goto(OLX_URL, { waitUntil: "domcontentloaded" });
+    // 🧭 Jeśli mamy lokalizację, dorzucamy ją
+    const searchUrl = normalized
+      ? `${OLX_URL}/${normalized}/q-${query}/`
+      : `${OLX_URL}/oferty/q-${query}/`;
+
+    console.log("🔍 Wchodzę na stronę OLX...");
+    await page.goto(searchUrl, {
+      waitUntil: "domcontentloaded",
+    });
+
     await acceptCookiesIfPresent(page); // akceptuje cookies
 
     console.log("⌛ Czekam aż OLX załaduje oferty...");
@@ -38,7 +49,7 @@ export const scrapeOffers = async () => {
         console.log("Znaleziono kart:", cards.length);
 
         const exctractFn = eval(extractFnString);
-        return Array.from(cards).slice(0, 5).map(exctractFn);
+        return Array.from(cards).slice(0, 5).map(exctractFn); // zmienic 5 na zmienną z frontu
       },
       extractOffer.toString()
     );
