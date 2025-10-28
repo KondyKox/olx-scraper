@@ -1,7 +1,11 @@
 export type Offer = {
   title: string;
-  price: string; // TODO: zmienic na number
+  price: number;
   location: string;
   date: string;
   url: string;
+  image: {
+    src: string;
+    alt: string;
+  };
 };

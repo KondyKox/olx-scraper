@@ -1,23 +1,42 @@
 export const extractOffer = (card: Element) => {
-  const title = card.querySelector("h4")?.textContent?.trim() || "Brak tytułu";
+  // Title
+  const title = (card.querySelector("h4")?.textContent || "Brak tytułu").trim();
 
-  const rawPrice =
-    card.querySelector("p[data-testid='ad-price']")?.textContent?.trim() ||
-    "Brak ceny";
-
-  // 🧹 czyszczenie z CSS, zł, tekstów itp.
+  // Price
+  const rawPrice = (
+    card.querySelector("p[data-testid='ad-price']")?.textContent || "Brak ceny"
+  ).trim();
   const cleanPrice = rawPrice
-    .replace(/[^0-9 zł.,]/g, "") // usuwa znaczniki, klasy itd.
-    .replace(/\s+/g, " ") // usuwa nadmiarowe spacje
-    .trim();
+    .replace(/[^0-9.,]/g, "") // usuwa wszystko poza cyframi, przecinkiem i kropką
+    .trim() // usuwa białe znaki (spacje) na początku i końcu
+    .replace(",", ".") // zmienia przecinek na kropke
+    .replace(/\s/g, ""); // usuwa wszystkie inne spacje
+  const price = parseFloat(cleanPrice);
 
-  // Lokalizacja & Data
-  const locationDate =
-    card.querySelector("p[data-testid='location-date']")?.textContent?.trim() ||
-    "Brak lokalizacji - Brak daty";
-  const [location, date] = locationDate.split(/\s*-\s*/).map((s) => s.trim());
+  // Location & Date
+  const locDate = (
+    card.querySelector("p[data-testid='location-date']")?.textContent || ""
+  ).trim();
 
-  const link = (card.querySelector("a") as HTMLAnchorElement)?.href || "";
+  let location = locDate;
+  let date = "Brak daty";
+  if (locDate.includes("-")) {
+    const parts = locDate.split(/\s*-\s*/);
+    location = parts[0].trim();
+    date = parts[1]?.trim() || "Brak daty";
+  }
 
-  return { title, price: cleanPrice, location, date, link };
+  // Link to page
+  const url = (card.querySelector("a")?.href || "").trim();
+
+  // Image src & alt
+  const imageEl = card.querySelector("img.css-8wsg1m");
+  const imageSrc = imageEl?.getAttribute("src");
+  const imageAlt = imageEl?.getAttribute("alt");
+  const image = {
+    src: imageSrc,
+    alt: imageAlt,
+  };
+
+  return { title, price, location, date, url, image };
 };

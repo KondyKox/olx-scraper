@@ -1,7 +1,8 @@
-import { saveOffers } from "./saveOffers";
+// import { saveOffers } from "./saveOffers";
 import { createBrowser } from "../config/browser";
 import { OLX_URL } from "../config/scraper";
 import { acceptCookiesIfPresent } from "../utils/consent";
+import { extractOffer } from "./extractOffer";
 
 export const scrapeOffers = async () => {
   const { browser, page } = await createBrowser();
@@ -31,47 +32,16 @@ export const scrapeOffers = async () => {
     await new Promise((res) => setTimeout(res, 1500));
 
     // Pobiera oferty
-    const offers = await page.$$eval("div[data-cy='l-card']", (cards) => {
-      console.log("Znaleziono kart:", cards.length);
+    const offers = await page.$$eval(
+      "div[data-cy='l-card']",
+      (cards, extractFnString) => {
+        console.log("Znaleziono kart:", cards.length);
 
-      return Array.from(cards)
-        .slice(0, 5)
-        .map((card, i) => {
-          const title = (
-            card.querySelector("h4")?.textContent || "Brak tytułu"
-          ).trim();
-          const rawPrice = (
-            card.querySelector("p[data-testid='ad-price']")?.textContent ||
-            "Brak ceny"
-          ).trim();
-          const cleanPrice = rawPrice.replace(/[^0-9 zł.,]/g, "").trim();
-
-          const locDate = (
-            card.querySelector("p[data-testid='location-date']")?.textContent ||
-            ""
-          ).trim();
-
-          let location = locDate;
-          let date = "Brak daty";
-          if (locDate.includes("-")) {
-            const parts = locDate.split(/\s*-\s*/);
-            location = parts[0].trim();
-            date = parts[1]?.trim() || "Brak daty";
-          }
-
-          const url = (card.querySelector("a")?.href || "").trim();
-
-          console.log(`Oferta ${i + 1}:`, {
-            title,
-            cleanPrice,
-            location,
-            date,
-            url,
-          });
-
-          return { title, price: cleanPrice, location, date, url };
-        });
-    });
+        const exctractFn = eval(extractFnString);
+        return Array.from(cards).slice(0, 5).map(exctractFn);
+      },
+      extractOffer.toString()
+    );
 
     console.log(`📦 Znalazłem ${offers.length} ofert`);
     // saveOffers(offers);
