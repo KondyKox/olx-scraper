@@ -1,10 +1,13 @@
 .offersList {
+  --offer-height: 10rem;
+
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   gap: 1rem;
   list-style-type: none;
+  width: 100%;
 }
 
 .noOffers {
@@ -17,6 +20,7 @@
 .offer {
   text-decoration: none;
   width: 100%;
+  height: var(--offer-height);
   background-color: var(--clr-background-secondary);
   transition: background 0.2s ease-in-out;
   cursor: pointer;
@@ -39,24 +43,53 @@
 
 .offerImage {
   width: 15rem;
-  height: 10rem;
+  height: var(--offer-height);
 }
 
 .offerData {
-  padding: 1rem;
+  padding: 0 1rem;
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  gap: 1rem;
+  justify-content: space-between;
+  gap: 1.5rem;
+  flex: 1;
 }
 
 .dataContainer {
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
+  position: relative;
+  width: 100%;
+}
+.dataContainer:first-child {
+  justify-content: space-between;
+  flex-direction: row;
 }
 
-.price span {
+.dataContainer h3 {
+  max-width: 80%;
+}
+
+.saveIcon {
+  position: absolute;
+  right: 0;
+  transition: all 0.3s ease-in-out;
+  cursor: pointer;
+}
+.saveIcon:hover {
+  stroke: var(--clr-red);
+  fill: var(--clr-red);
+  transform: scale(1.2);
+  filter: drop-shadow(0 0 7px var(--clr-red));
+}
+
+.saved {
+  fill: var(--clr-red);
+  stroke: var(--clr-red);
+}
+
+.price {
   color: green;
   font-weight: 600;
 }

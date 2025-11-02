@@ -3,6 +3,8 @@ import cors from "cors";
 import dotenv from "dotenv";
 import connectDB from "./config/db";
 import scrapeRoute from "./routes/scrapeRoute";
+import saveRoute from "./routes/saveRoute";
+import savedRoute from "./routes/savedRoute";
 
 dotenv.config();
 const app = express();
@@ -13,6 +15,8 @@ app.use(express.json());
 connectDB();
 
 app.use("/api", scrapeRoute);
+app.use("/api", saveRoute);
+app.use("/api", savedRoute);
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
