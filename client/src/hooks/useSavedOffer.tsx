@@ -6,21 +6,23 @@ export const useSavedOffer = () => {
   const [savedOffers, setSavedOffers] = useState<Offer[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
 
-  useEffect(() => {
-    const fetchSaved = async () => {
-      setLoading(true);
-      try {
-        const res = await axios.get("/api/saved");
-        setSavedOffers(res.data);
-      } catch (err) {
-        console.error("Nie udało się pobrać zapisanych ofert:", err);
-      } finally {
-        setLoading(false);
-      }
-    };
+  const fetchSaved = async () => {
+    setLoading(true);
+    try {
+      const res = await axios.get("/api/saved");
+      setSavedOffers(res.data);
+    } catch (err) {
+      console.error("Nie udało się pobrać zapisanych ofert:", err);
+    } finally {
+      setLoading(false);
+    }
+  };
 
+  useEffect(() => {
     fetchSaved();
+    // const interval = setInterval(fetchSaved, 10000);
+    // return () => clearInterval(interval);
   }, []);
 
-  return { savedOffers, setSavedOffers, loading };
+  return { savedOffers, setSavedOffers, loading /* refetch: fetchSaved */ };
 };

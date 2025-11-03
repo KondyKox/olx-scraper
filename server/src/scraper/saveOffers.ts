@@ -6,35 +6,46 @@ import { Offer } from "../types/OfferProps";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-// Save many offers
-export const saveOffers = (offers: Offer[]) => {
-  const filePath = createPath();
-
-  fs.writeFileSync(filePath, JSON.stringify(offers, null, 2), "utf-8");
-  console.log("💾 Zapisano oferty do pliku data/offers.json");
-};
-
-// Save one offer
+// Save single offer
 export const saveOffer = (newOffer: Offer) => {
   const filePath = createPath();
   const offers = readOffers();
 
-  if (findOffer(newOffer)) {
-    console.warn("Już istnieje taka oferta.");
-    return false;
+  const exists = findOffer(newOffer);
+
+  if (exists) {
+    console.warn("⚠️ Oferta już istniała — usuwam ją.");
+    const updatedOffers = offers.filter((o) => o.url !== newOffer.url);
+    fs.writeFileSync(filePath, JSON.stringify(updatedOffers, null, 2), "utf-8");
+    console.log("🗑️ Oferta usunięta!");
+    return { success: true, removed: true };
   }
 
   offers.push(newOffer);
   fs.writeFileSync(filePath, JSON.stringify(offers, null, 2), "utf-8");
-  console.log("Oferta zapisana!");
+  console.log("💾 Oferta zapisana!");
+  return { success: true, removed: false };
+};
+
+// Delete offer
+export const deleteOffer = (offer: Offer) => {
+  const filePath = createPath();
+  const offers = readOffers();
+
+  const updatedOffers = offers.filter((o) => o.url !== offer.url);
+
+  fs.writeFileSync(filePath, JSON.stringify(updatedOffers, null, 2), "utf-8");
+  console.log("🗑️ Oferta usunięta!");
   return true;
 };
 
+// Find single offer
 export const findOffer = (newOffer: Offer): boolean => {
   const offers = readOffers();
   return offers.some((offer: Offer) => newOffer.id === offer.id);
 };
 
+// Read offers from json
 export const readOffers = (): Offer[] => {
   const filePath = createPath();
 

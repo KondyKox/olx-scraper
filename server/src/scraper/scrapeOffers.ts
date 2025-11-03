@@ -1,4 +1,3 @@
-// import { saveOffers } from "./saveOffers";
 import { createBrowser } from "../config/browser";
 import { normalizedLocation } from "../utils/normalizeLocation";
 import { acceptCookiesIfPresent } from "../utils/consent";
@@ -63,7 +62,6 @@ export const scrapeOffers = async (
     );
 
     console.log(`📦 Znalazłem ${offers.length} ofert`);
-    // saveOffers(offers);
 
     return offers;
   } catch (err) {

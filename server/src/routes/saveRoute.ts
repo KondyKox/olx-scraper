@@ -26,12 +26,24 @@ router.post("/saveOffer", async (req, res) => {
   }
 
   try {
-    await saveOffer(offerToSave);
+    const result = await saveOffer(offerToSave);
 
-    return res.status(200).json({ success: true, message: "Offer saved." });
+    if (result.removed) {
+      return res.status(200).json({
+        success: true,
+        removed: true,
+        message: "Oferta została usunięta.",
+      });
+    }
+
+    return res.status(200).json({
+      success: true,
+      removed: false,
+      message: "Oferta została zapisana.",
+    });
   } catch (err) {
     console.error("Nie udało się zapisać oferty:", err);
-    return res.status(500).json({ success: false, error: err });
+    return res.status(500).json({ success: false, error: String(err) });
   }
 });
 

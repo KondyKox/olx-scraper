@@ -11,15 +11,15 @@ const OffersList = () => {
 
   const handleClick = async (e: React.MouseEvent, offer: Offer) => {
     e.stopPropagation();
+    e.preventDefault();
 
     try {
       const res = await axios.post("/api/saveOffer", offer);
-      console.log("Oferta zapisana:", res.data);
+      const { removed } = res.data;
 
       setSavedOffers((prev) => {
-        const alreadySaved = prev.some((o) => o.id === offer.id);
-        if (alreadySaved) return prev;
-        return [...prev, offer];
+        if (removed) return prev.filter((o) => o.id !== offer.id);
+        else return [...prev, offer];
       });
     } catch (err) {
       console.error("Nie udało się zapisać oferty:", err);
