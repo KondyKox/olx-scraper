@@ -30,7 +30,7 @@ export const extractOffer = (card: Element) => {
   }
 
   // Link to page
-  const url = (card.querySelector("a")?.href || "").trim();
+  const url = (card.querySelector("a")?.href || "#").trim();
 
   // Image src & alt
   const imageEl = card.querySelector("img.css-8wsg1m");
@@ -46,5 +46,44 @@ export const extractOffer = (card: Element) => {
     alt: imageAlt,
   };
 
-  return { id, title, price, location, date, url, image };
+  const parsedDate = parseDate(date);
+
+  return { id, title, price, location, date: parsedDate, url, image };
+};
+
+// Parse date text to normal date
+export const parseDate = (dateText: string): string => {
+  const months = [
+    "stycznia",
+    "lutego",
+    "marca",
+    "kwietnia",
+    "maja",
+    "czerwca",
+    "lipca",
+    "sierpnia",
+    "września",
+    "października",
+    "listopada",
+    "grudnia",
+  ];
+
+  const now = new Date();
+  const lower = dateText.toLowerCase().trim();
+
+  const formatDate = (d: Date) => {
+    return `${d.getDate()} ${months[d.getMonth()]} ${d.getFullYear()}`;
+  };
+
+  // 🔹 Dzisiaj
+  if (lower.includes("dzisiaj")) return formatDate(now);
+
+  // 🔹 Wczoraj
+  if (lower.includes("wczoraj")) {
+    const d = new Date(now);
+    d.setDate(now.getDate() - 1);
+    return formatDate(d);
+  }
+
+  return dateText;
 };

@@ -2,7 +2,7 @@
 import { createBrowser } from "../config/browser";
 import { normalizedLocation } from "../utils/normalizeLocation";
 import { acceptCookiesIfPresent } from "../utils/consent";
-import { extractOffer } from "./extractOffer";
+import { extractOffer, parseDate } from "./extractOffer";
 import { OLX_URL } from "../config/scraper";
 
 export const scrapeOffers = async (
@@ -49,13 +49,16 @@ export const scrapeOffers = async (
     // Pobiera oferty
     const offers = await page.$$eval(
       "div[data-cy='l-card']",
-      (cards, extractFnString, amount) => {
+      (cards, extractFnString, parseDateString, amount) => {
         console.log("Znaleziono kart:", cards.length);
 
-        const exctractFn = eval(extractFnString);
-        return Array.from(cards).slice(0, amount).map(exctractFn);
+        const parseDate = eval(parseDateString);
+        const extractFn = eval(extractFnString);
+        // return Array.from(cards).slice(0, amount).map(extractFn );
+        return cards.slice(0, amount).map((c) => extractFn(c, parseDate));
       },
-      extractOffer.toString(),
+      cleanFunctionString(extractOffer),
+      cleanFunctionString(parseDate),
       amount
     );
 
@@ -75,4 +78,20 @@ export const scrapeOffers = async (
       console.log("⚠️ Przeglądarka nie została utworzona – nie mam co zamykać");
     }
   }
+};
+
+const cleanFunctionString = (fn: Function) => {
+  let str = fn.toString();
+
+  // usuń "export const" / "const" / "function"
+  str = str.replace(/^(export\s+)?(const|function)\s+/, "");
+
+  // usuń wrappery typu __name(..., 'coś')
+  str = str.replace(/__name\s*\((.*?),\s*['"].*?['"]\s*\)/s, "$1");
+
+  // usuń ewentualne średniki i nadmiarowe nawiasy
+  str = str.replace(/;+\s*$/, "");
+  str = str.trim();
+
+  return str;
 };
