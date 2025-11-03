@@ -1,8 +1,21 @@
-.input_container {
+.form_container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.container {
   display: flex;
   justify-content: center;
   align-items: center;
   gap: 0.5rem;
+  width: 100%;
+}
+
+.container * {
+  flex: 1;
 }
 
 .input_wrapper {
@@ -18,7 +31,7 @@
 .input_wrapper input {
   border: 1px solid transparent;
   border-radius: 8px;
-  padding: 10px 12px 10px 36px;
+  padding: 10px 12px 10px 42px;
   width: 100%;
 }
 
@@ -31,4 +44,8 @@
   width: 18px;
   height: 18px;
   pointer-events: none;
+}
+
+.btnDisplay {
+  background-color: var(--clr-red);
 }

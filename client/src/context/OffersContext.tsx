@@ -4,6 +4,7 @@ import axios from "axios";
 
 interface OffersContextType {
   offers: Offer[];
+  setOffers: React.Dispatch<React.SetStateAction<Offer[]>>;
   fetchOffers: (search: string, amount: number, location?: string) => void;
   loading: boolean;
 }
@@ -41,7 +42,7 @@ export const OffersProvider = ({ children }: { children: React.ReactNode }) => {
   };
 
   return (
-    <OffersContext.Provider value={{ offers, loading, fetchOffers }}>
+    <OffersContext.Provider value={{ offers, setOffers, loading, fetchOffers }}>
       {children}
     </OffersContext.Provider>
   );
