@@ -2,9 +2,9 @@ import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
 import connectDB from "./config/db.js";
-import scrapeRoute from "./routes/scrapeRoute";
-import saveRoute from "./routes/saveRoute";
-import savedRoute from "./routes/savedRoute";
+import scrapeRoute from "./routes/scrapeRoute.js";
+import saveRoute from "./routes/saveRoute.js";
+import savedRoute from "./routes/savedRoute.js";
 
 dotenv.config();
 const app = express();

@@ -1,5 +1,5 @@
 import express from "express";
-import { scrapeOffers } from "../scraper/scrapeOffers";
+import { scrapeOffers } from "../scraper/scrapeOffers.js";
 // import { saveOffers } from "../scraper/saveOffers";
 
 const router = express.Router();

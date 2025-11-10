@@ -1,7 +1,7 @@
 import fs from "fs";
 import { fileURLToPath } from "url";
 import path from "path";
-import { Offer } from "../types/OfferProps";
+import { Offer } from "../types/OfferProps.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);

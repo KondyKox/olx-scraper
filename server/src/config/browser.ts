@@ -1,6 +1,6 @@
 import puppeteer from "puppeteer-extra";
 import StealthPlugin from "puppeteer-extra-plugin-stealth";
-import { HEADLESS, PUPPETEER_ARGS, USER_AGENT } from "./scraper";
+import { HEADLESS, PUPPETEER_ARGS, USER_AGENT } from "./scraper.js";
 
 puppeteer.use(StealthPlugin());
 

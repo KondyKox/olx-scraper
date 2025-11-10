@@ -1,8 +1,8 @@
-import { createBrowser } from "../config/browser";
-import { normalizedLocation } from "../utils/normalizeLocation";
-import { acceptCookiesIfPresent } from "../utils/consent";
-import { extractOffer, parseDate } from "./extractOffer";
-import { OLX_URL } from "../config/scraper";
+import { createBrowser } from "../config/browser.js";
+import { normalizedLocation } from "../utils/normalizeLocation.js";
+import { acceptCookiesIfPresent } from "../utils/consent.js";
+import { extractOffer, parseDate } from "./extractOffer.js";
+import { OLX_URL } from "../config/scraper.js";
 
 export const scrapeOffers = async (
   search: string,
