@@ -1,7 +1,7 @@
 import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
-import connectDB from "./config/db.js";
+// import connectDB from "./config/db.js";
 import scrapeRoute from "./routes/scrapeRoute.js";
 import saveRoute from "./routes/saveRoute.js";
 import savedRoute from "./routes/savedRoute.js";
@@ -12,7 +12,7 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-connectDB();
+// connectDB();
 
 app.use("/api", scrapeRoute);
 app.use("/api", saveRoute);
