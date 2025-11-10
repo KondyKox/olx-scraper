@@ -5,6 +5,7 @@ import dotenv from "dotenv";
 import scrapeRoute from "./routes/scrapeRoute.js";
 import saveRoute from "./routes/saveRoute.js";
 import savedRoute from "./routes/savedRoute.js";
+import pingRoute from "./routes/pingRoute.js";
 
 dotenv.config();
 const app = express();
@@ -17,6 +18,7 @@ app.use(express.json());
 app.use("/api", scrapeRoute);
 app.use("/api", saveRoute);
 app.use("/api", savedRoute);
+app.use("/api", pingRoute);
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
