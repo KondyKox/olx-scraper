@@ -10,7 +10,7 @@ export default defineConfig({
     proxy: {
       "/api": {
         target: isProduction
-          ? "https://olx-scraper-api.onrender.com/"
+          ? "https://olx-scraper-api.onrender.com"
           : "http://localhost:5000",
         changeOrigin: true,
       },
