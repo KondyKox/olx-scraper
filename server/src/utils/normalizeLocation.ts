@@ -29,8 +29,11 @@ const polishCharsMap: Record<string, string> = {
   ż: "z",
 };
 
-export const normalizedLocation = (name?: string): string | undefined => {
-  if (!name) return undefined;
+export const normalizedLocation = (name: unknown): string | undefined => {
+  if (typeof name !== "string") {
+    console.warn("normalizedLocation dostał coś jebniętego:", name);
+    return undefined;
+  }
 
   const key = name.trim().toLowerCase();
 

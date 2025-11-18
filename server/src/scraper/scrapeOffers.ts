@@ -3,12 +3,9 @@ import { normalizedLocation } from "../utils/normalizeLocation.js";
 import { acceptCookiesIfPresent } from "../utils/consent.js";
 import { extractOffer, parseDate } from "./extractOffer.js";
 import { OLX_URL } from "../config/scraper.js";
+import { Offer } from "../types/OfferProps.js";
 
-export const scrapeOffers = async (
-  search: string,
-  amount: number,
-  location?: string
-) => {
+export const scrapeOffers = async (search: string, location?: string) => {
   const { browser, page } = await createBrowser();
 
   // Logi z przeglądarki
@@ -33,37 +30,50 @@ export const scrapeOffers = async (
       waitUntil: "domcontentloaded",
     });
 
-    await acceptCookiesIfPresent(page); // akceptuje cookies
+    let currentUrl: string | null = searchUrl;
+    let allOffers: Offer[] = [];
 
-    console.log("⌛ Czekam aż OLX załaduje oferty...");
-    // Czekaj aż faktycznie pojawi się kilka ofert (nie tylko 1)
-    await page.waitForFunction(
-      () => document.querySelectorAll("div[data-cy='l-card']").length > 10,
-      { timeout: 20000 }
-    );
+    while (currentUrl) {
+      await acceptCookiesIfPresent(page); // akceptuje cookies
 
-    // Daj sekundę na dorysowanie i lazy-loady
-    await new Promise((res) => setTimeout(res, 1500));
+      console.log("⌛ Czekam aż OLX załaduje oferty...");
+      // Czekaj aż faktycznie pojawi się kilka ofert (nie tylko 1)
+      await page.waitForFunction(
+        () => document.querySelectorAll("div[data-cy='l-card']").length > 10,
+        { timeout: 20000 }
+      );
 
-    // Pobiera oferty
-    const offers = await page.$$eval(
-      "div[data-cy='l-card']",
-      (cards, extractFnString, parseDateString, amount) => {
-        console.log("Znaleziono kart:", cards.length);
+      // Daj sekundę na dorysowanie i lazy-loady
+      await new Promise((res) => setTimeout(res, 1500));
 
-        const parseDate = eval(parseDateString);
-        const extractFn = eval(extractFnString);
-        // return Array.from(cards).slice(0, amount).map(extractFn );
-        return cards.slice(0, amount).map((c) => extractFn(c, parseDate));
-      },
-      cleanFunctionString(extractOffer),
-      cleanFunctionString(parseDate),
-      amount
-    );
+      // Pobiera oferty
+      const offers = await page.$$eval(
+        "div[data-cy='l-card']",
+        (cards, extractFnString, parseDateString) => {
+          console.log("Znaleziono kart:", cards.length);
 
-    console.log(`📦 Znalazłem ${offers.length} ofert`);
+          const parseDate = eval(parseDateString);
+          const extractFn = eval(extractFnString);
+          // return Array.from(cards).slice(0, amount).map(extractFn );
+          return cards.map((c) => extractFn(c, parseDate));
+        },
+        cleanFunctionString(extractOffer),
+        cleanFunctionString(parseDate)
+      );
 
-    return offers;
+      allOffers.push(...offers);
+
+      // SZUKAMY LINKU DO NASTĘPNEJ STRONY
+      const nextHref = await page
+        .$eval("a[data-testid='pagination-forward']", (el) => el?.href ?? null)
+        .catch(() => null);
+
+      currentUrl = nextHref;
+
+      console.log(`📦 Znalazłem ${allOffers.length} ofert`);
+
+      return allOffers;
+    }
   } catch (err) {
     console.error("🔥 Błąd podczas scrapowania:", err);
     throw err;
