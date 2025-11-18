@@ -1,5 +1,5 @@
 import { createBrowser } from "../config/browser.js";
-import { normalizedLocation } from "../utils/normalizeLocation.js";
+// import { normalizedLocation } from "../utils/normalizeLocation.js";
 import { acceptCookiesIfPresent } from "../utils/consent.js";
 import { extractOffer, parseDate } from "./extractOffer.js";
 import { OLX_URL } from "../config/scraper.js";
@@ -18,11 +18,11 @@ export const scrapeOffers = async (search: string, location?: string) => {
 
   try {
     const query = encodeURIComponent(search.trim());
-    const normalized = normalizedLocation(location);
+    // const normalized = normalizedLocation(location);
 
     // 🧭 Jeśli mamy lokalizację, dorzucamy ją
-    const searchUrl = normalized
-      ? `${OLX_URL}/${normalized}/q-${query}/`
+    const searchUrl = location
+      ? `${OLX_URL}/${location}/q-${query}/`
       : `${OLX_URL}/oferty/q-${query}/`;
 
     console.log("🔍 Wchodzę na stronę OLX...");
@@ -54,7 +54,7 @@ export const scrapeOffers = async (search: string, location?: string) => {
 
           const parseDate = eval(parseDateString);
           const extractFn = eval(extractFnString);
-          // return Array.from(cards).slice(0, amount).map(extractFn );
+
           return cards.map((c) => extractFn(c, parseDate));
         },
         cleanFunctionString(extractOffer),

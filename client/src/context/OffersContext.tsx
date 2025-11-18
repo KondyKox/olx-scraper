@@ -5,7 +5,7 @@ import axios from "axios";
 interface OffersContextType {
   offers: Offer[];
   setOffers: React.Dispatch<React.SetStateAction<Offer[]>>;
-  fetchOffers: (search: string, amount: number, location?: string) => void;
+  fetchOffers: (search: string, location?: string) => void;
   loading: boolean;
 }
 
@@ -17,18 +17,13 @@ export const OffersProvider = ({ children }: { children: React.ReactNode }) => {
   const [offers, setOffers] = useState<Offer[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
 
-  const fetchOffers = async (
-    search: string,
-    amount: number,
-    location?: string
-  ) => {
+  const fetchOffers = async (search: string, location?: string) => {
     try {
       setLoading(true);
 
       const res = await axios.get("/api/scrape", {
         params: {
           search: search,
-          amount: amount,
           location: location,
         },
       });

@@ -1,3 +1,8 @@
+/**
+ * Legacy code
+ * Może to przywrócę, ale na chwilę obecną wolę mieć zdefiniowane elementy i się nie jebać z tym
+ */
+
 const olxRegions: Record<string, string> = {
   dolnośląskie: "dolnoslaskie",
   "kujawsko-pomorskie": "kujawsko-pomorskie",

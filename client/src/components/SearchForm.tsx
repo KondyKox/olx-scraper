@@ -1,13 +1,18 @@
-import { ListOrdered, MapPin, Search } from "lucide-react";
+import { MapPin, Search } from "lucide-react";
 import styles from "../styles/SearchForm.module.css";
 import { useState, type FormEvent, useEffect } from "react";
 import { useOffers } from "../hooks/useOffers";
 import { useSavedOffer } from "../hooks/useSavedOffer";
+import {
+  SEARCH_ITEMS,
+  SEARCH_LOCATIONS,
+  SearchItemLabels,
+  SearchLocationLabels,
+} from "../constants/searchOptions";
 
 const SearchForm = () => {
   const [search, setSearch] = useState("");
   const [location, setLocation] = useState("");
-  const [amount, setAmount] = useState(10);
   const [showSaved, setShowSaved] = useState(false); // 🔥 flaga
   const { fetchOffers, setOffers } = useOffers();
   const { savedOffers, loading } = useSavedOffer();
@@ -15,7 +20,7 @@ const SearchForm = () => {
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     setShowSaved(false); // jak szukasz nowych, wyłącz zapisane
-    await fetchOffers(search, amount, location);
+    await fetchOffers(search, location);
   };
 
   const handleShowSaved = () => {
@@ -34,36 +39,34 @@ const SearchForm = () => {
       <div className={styles.container}>
         <div className={styles.input_wrapper}>
           <Search className={styles.icon} />
-          <input
+          <select
             id="search"
-            type="text"
-            placeholder="Czego szukasz..."
+            className={styles.input}
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-          />
+          >
+            {SEARCH_ITEMS.map((option, i) => (
+              <option key={i} value={option}>
+                {SearchItemLabels[option]}
+              </option>
+            ))}
+          </select>
         </div>
 
         <div className={styles.input_wrapper}>
           <MapPin className={styles.icon} />
-          <input
+          <select
             id="location"
-            type="text"
-            placeholder="Jaka lokalizacja..."
+            className={styles.input}
             value={location}
             onChange={(e) => setLocation(e.target.value)}
-          />
-        </div>
-
-        <div className={styles.input_wrapper}>
-          <ListOrdered className={styles.icon} />
-          <input
-            id="amount"
-            type="number"
-            min={1}
-            placeholder="Ile elementów..."
-            value={amount}
-            onChange={(e) => setAmount(parseInt(e.target.value))}
-          />
+          >
+            {SEARCH_LOCATIONS.map((option, i) => (
+              <option key={i} value={option}>
+                {SearchLocationLabels[option]}
+              </option>
+            ))}
+          </select>
         </div>
       </div>
 
