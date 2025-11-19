@@ -1,13 +1,12 @@
 .offersList {
   --offer-height: 10rem;
 
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  gap: 1rem;
+  display: block;
   list-style-type: none;
   width: 100%;
+  height: 650px;
+  overflow-y: auto;
+  padding-right: 1rem;
 }
 
 .noOffers {
@@ -26,6 +25,13 @@
   cursor: pointer;
   border-radius: 8px;
   overflow: hidden;
+  margin: 1rem 0;
+}
+.offer:first-child {
+  margin-top: 0;
+}
+.offer:last-child {
+  margin-bottom: 0;
 }
 
 .offer:hover {

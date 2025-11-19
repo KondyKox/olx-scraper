@@ -11,7 +11,7 @@ import {
 } from "../constants/searchOptions";
 
 const SearchForm = () => {
-  const [search, setSearch] = useState("");
+  const [search, setSearch] = useState("iphone");
   const [location, setLocation] = useState("");
   const [showSaved, setShowSaved] = useState(false); // 🔥 flaga
   const { fetchOffers, setOffers } = useOffers();
