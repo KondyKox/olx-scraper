@@ -9,6 +9,10 @@
   padding-right: 1rem;
 }
 
+.averagePrice {
+  color: var(--clr-accent);
+}
+
 .noOffers {
   color: red;
   font-size: var(--font-lg);
