@@ -7,6 +7,7 @@
   height: 650px;
   overflow-y: auto;
   padding-right: 1rem;
+  /* box-shadow: 0 0 5px white; */
 }
 
 .averagePrice {
@@ -27,15 +28,20 @@
   background-color: var(--clr-background-secondary);
   transition: background 0.2s ease-in-out;
   cursor: pointer;
-  border-radius: 8px;
+  /* border-radius: 8px; */
   overflow: hidden;
   margin: 1rem 0;
+  border-left: 1px solid white;
 }
 .offer:first-child {
   margin-top: 0;
+  border-top-left-radius: 8px;
+  border-top: 1px solid white;
 }
 .offer:last-child {
   margin-bottom: 0;
+  border-bottom-left-radius: 8px;
+  border-bottom: 1px solid white;
 }
 
 .offer:hover {
