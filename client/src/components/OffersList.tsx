@@ -4,9 +4,11 @@ import styles from "../styles/OffersList.module.css";
 import type { Offer } from "../types/OfferProps";
 import axios from "axios";
 import { useSavedOffer } from "../hooks/useSavedOffer";
+import { useSearch } from "../hooks/useSearch";
 
 const OffersList = () => {
   const { offers, loading } = useOffers();
+  const { search } = useSearch();
   const { savedOffers, setSavedOffers } = useSavedOffer();
 
   const handleClick = async (e: React.MouseEvent, offer: Offer) => {
@@ -14,7 +16,7 @@ const OffersList = () => {
     e.preventDefault();
 
     try {
-      const res = await axios.post("/api/saveOffer", offer);
+      const res = await axios.post("/api/saveOffer", { offer, search });
       const { removed } = res.data;
 
       setSavedOffers((prev) => {

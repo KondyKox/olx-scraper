@@ -4,7 +4,7 @@ import { saveOffer } from "../scraper/saveOffers.js";
 const router = express.Router();
 
 router.post("/saveOffer", async (req, res) => {
-  const offerToSave = req.body;
+  const { offer, search } = req.body;
 
   /*
    W momemcie jak będę chciał mieć pliki nazwane po przedmiotach
@@ -20,13 +20,13 @@ router.post("/saveOffer", async (req, res) => {
         .json({ success: false, error: "No search query provided." });
     } */
 
-  if (!offerToSave || !offerToSave.id) {
+  if (!offer || !offer.id) {
     console.warn("⚠️ Brak oferty do zapisania.");
     return res.status(400).json({ success: false, error: "No offer to save." });
   }
 
   try {
-    const result = await saveOffer(offerToSave);
+    const result = await saveOffer(offer, search);
 
     if (result.removed) {
       return res.status(200).json({

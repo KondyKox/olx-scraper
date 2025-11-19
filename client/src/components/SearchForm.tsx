@@ -6,13 +6,16 @@ import { useSavedOffer } from "../hooks/useSavedOffer";
 import {
   SEARCH_ITEMS,
   SEARCH_LOCATIONS,
+  type SearchItem,
   SearchItemLabels,
+  type SearchLocation,
   SearchLocationLabels,
 } from "../constants/searchOptions";
+import { useSearch } from "../hooks/useSearch";
 
 const SearchForm = () => {
-  const [search, setSearch] = useState("iphone");
-  const [location, setLocation] = useState("");
+  const { search, setSearch } = useSearch();
+  const [location, setLocation] = useState<SearchLocation>("");
   const [showSaved, setShowSaved] = useState(false); // 🔥 flaga
   const { fetchOffers, setOffers } = useOffers();
   const { savedOffers, loading } = useSavedOffer();
@@ -43,7 +46,7 @@ const SearchForm = () => {
             id="search"
             className={styles.input}
             value={search}
-            onChange={(e) => setSearch(e.target.value)}
+            onChange={(e) => setSearch(e.target.value as SearchItem)}
           >
             {SEARCH_ITEMS.map((option, i) => (
               <option key={i} value={option}>
@@ -59,7 +62,7 @@ const SearchForm = () => {
             id="location"
             className={styles.input}
             value={location}
-            onChange={(e) => setLocation(e.target.value)}
+            onChange={(e) => setLocation(e.target.value as SearchLocation)}
           >
             {SEARCH_LOCATIONS.map((option, i) => (
               <option key={i} value={option}>

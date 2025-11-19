@@ -7,11 +7,11 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 // Save single offer
-export const saveOffer = (newOffer: Offer) => {
-  const filePath = createPath();
-  const offers = readOffers();
+export const saveOffer = (newOffer: Offer, search: string) => {
+  const filePath = createPath(search);
+  const offers = readOffers(search);
 
-  const exists = findOffer(newOffer);
+  const exists = findOffer(newOffer, search);
 
   if (exists) {
     console.warn("⚠️ Oferta już istniała — usuwam ją.");
@@ -28,9 +28,9 @@ export const saveOffer = (newOffer: Offer) => {
 };
 
 // Delete offer
-export const deleteOffer = (offer: Offer) => {
-  const filePath = createPath();
-  const offers = readOffers();
+export const deleteOffer = (offer: Offer, search: string) => {
+  const filePath = createPath(search);
+  const offers = readOffers(search);
 
   const updatedOffers = offers.filter((o) => o.url !== offer.url);
 
@@ -40,14 +40,14 @@ export const deleteOffer = (offer: Offer) => {
 };
 
 // Find single offer
-export const findOffer = (newOffer: Offer): boolean => {
-  const offers = readOffers();
+export const findOffer = (newOffer: Offer, search: string): boolean => {
+  const offers = readOffers(search);
   return offers.some((offer: Offer) => newOffer.id === offer.id);
 };
 
 // Read offers from json
-export const readOffers = (): Offer[] => {
-  const filePath = createPath();
+export const readOffers = (search: string): Offer[] => {
+  const filePath = createPath(search);
 
   if (!fs.existsSync(filePath)) {
     fs.writeFileSync(filePath, "[]", "utf-8");
@@ -58,13 +58,15 @@ export const readOffers = (): Offer[] => {
 };
 
 // Create path to offers.json
-export const createPath = () => {
-  const dirPath = path.join(__dirname, "../../data");
-  const filePath = path.join(dirPath, "offers.json");
+export const createPath = (search: string) => {
+  const safeName = search.toLowerCase().replace(/[^a-z0-9\-]/g, "-");
 
-  if (!fs.existsSync(dirPath)) {
-    fs.mkdirSync(dirPath, { recursive: true });
-  }
+  const dirPath = path.join(__dirname, "../../data");
+  const filePath = path.join(dirPath, `${safeName}.json`);
+
+  if (!fs.existsSync(dirPath)) fs.mkdirSync(dirPath, { recursive: true });
+
+  if (!fs.existsSync(filePath)) fs.writeFileSync(filePath, "[]", "utf-8");
 
   return filePath;
 };
