@@ -16,26 +16,25 @@ import { useSearch } from "../hooks/useSearch";
 const SearchForm = () => {
   const { search, setSearch } = useSearch();
   const [location, setLocation] = useState<SearchLocation>("");
-  const [showSaved, setShowSaved] = useState(false); // 🔥 flaga
   const { fetchOffers, setOffers } = useOffers();
-  const { savedOffers, loading } = useSavedOffer();
+  const { savedOffers, loading, fetchSaved } = useSavedOffer();
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
-    setShowSaved(false); // jak szukasz nowych, wyłącz zapisane
     await fetchOffers(search, location);
   };
 
-  const handleShowSaved = () => {
-    setShowSaved(true);
+  const handleShowSaved = async () => {
+    await fetchSaved();
+    setOffers(savedOffers);
   };
 
   // 🔥 reaguj na zakończenie ładowania zapisanych ofert
   useEffect(() => {
-    if (showSaved && !loading && savedOffers.length > 0) {
+    if (!loading && savedOffers.length > 0) {
       setOffers(savedOffers);
     }
-  }, [showSaved, loading, savedOffers, setOffers]);
+  }, [loading, savedOffers, setOffers]);
 
   return (
     <form onSubmit={handleSubmit} className={styles.form_container}>

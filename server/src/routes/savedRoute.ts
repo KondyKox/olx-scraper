@@ -4,8 +4,9 @@ import { readOffers } from "../scraper/saveOffers.js";
 const router = express.Router();
 
 router.get("/saved", async (req, res) => {
+  const { search } = req.query;
   try {
-    const offers = readOffers();
+    const offers = readOffers(search as string);
     res.json(offers);
   } catch (err) {
     console.error("Błąd przy pobieraniu zapisanych ofert:", err);
