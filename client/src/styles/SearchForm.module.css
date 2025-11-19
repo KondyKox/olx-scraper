@@ -46,6 +46,10 @@
   pointer-events: none;
 }
 
+.btnSearch {
+  background-color: var(--clr-green);
+}
+
 .btnDisplay {
   background-color: var(--clr-red);
 }

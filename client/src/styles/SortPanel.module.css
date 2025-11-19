@@ -1,0 +1,27 @@
+.panel_container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  width: 100%;
+  width: 100%;
+  margin: 1rem 0;
+}
+
+.sort_wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  flex: 1;
+}
+
+.sort_wrapper label {
+  font-size: var(--font-sm);
+  font-style: italic;
+}
+
+.sort_wrapper select {
+  width: 100%;
+  padding: 0.5rem 0.25rem;
+  border-radius: 8px;
+}
